@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
-import Enseignat from "./component/enseignat/Enseignat"
-import Home from "./component/etudiant/Home"
+import Enseignat from "./components/enseignat/Enseignat"
+import Home from "./components/etudiant/Home"
 function App() {
   return (
     <BrowserRouter>
