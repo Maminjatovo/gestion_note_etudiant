@@ -11,7 +11,7 @@ function CRUDComponent() {
   const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const host='http://127.0.0.1:8000/api/enseignat';
+  const host='http://192.168.137.136:8000/api/enseignat';
   useEffect(() => {
     // Récupérer les données de l'API lorsque le composant est monté
     axios.get(host)
@@ -26,7 +26,7 @@ function CRUDComponent() {
   // Fonction pour créer un nouvel enregistrement
   const handleCreate = event => {
     event.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/enseignat', formData)
+    axios.post(host, formData)
       .then(response => {
         // Ajouter le nouvel enregistrement aux données existantes
         setData([...data, response.data]);
@@ -41,7 +41,7 @@ function CRUDComponent() {
   // Fonction pour mettre à jour un enregistrement
   const handleUpdate = event => {
     event.preventDefault();
-    axios.put(`http://127.0.0.1:8000/api/enseignat/${selectedId}`, formData)
+    axios.put(`${host}/${selectedId}`, formData)
       .then(response => {
         // Mettre à jour les données dans l'état
         setData(data.map(item => item.id === selectedId ? response.data : item));
@@ -57,7 +57,7 @@ function CRUDComponent() {
 
   // Fonction pour supprimer un enregistrement
   const handleDelete = id => {
-    axios.delete(`http://127.0.0.1:8000/api/enseignat/${id}`)
+    axios.delete(`${host}/enseignat/${id}`)
       .then(response => {
         // Supprimer l'enregistrement des données
         setData(data.filter(item => item.id !== id));
