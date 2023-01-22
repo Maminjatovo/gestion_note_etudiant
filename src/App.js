@@ -1,14 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-import  Form from './components/etudiant/Home' 
 
-function App() {
-  return (
-    <div className='App'>
-        <Form />
-        
-    </div>
-  );
+ 
+import React, { Component } from 'react';
+import './App.css';
+let n=0
+class App extends Component {
+
+  render() {
+    return (
+      <div className="container">
+        <h1>Bonjour le gens</h1>
+       
+        <span>0</span>
+      </div>
+    );
+
+    window.setInterval(()=>{
+      n++
+      this.render()
+    },100)
+  }
+  
 }
 
+
+
 export default App;
+
+
+
