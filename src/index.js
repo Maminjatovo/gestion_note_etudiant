@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Enseignat from './component/Enseignat/Enseignat';
 import Router from './Router';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
