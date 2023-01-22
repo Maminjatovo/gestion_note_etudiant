@@ -25,8 +25,9 @@ function CRUDComponent() {
 
   // Fonction pour créer un nouvel enregistrement
   const handleCreate = event => {
+   
     event.preventDefault();
-    axios.post(host+'/api/enseignat', formData)
+    axios.post(host, formData)
       .then(response => {
         // Ajouter le nouvel enregistrement aux données existantes
         setData([...data, response.data]);
@@ -57,7 +58,7 @@ function CRUDComponent() {
 
   // Fonction pour supprimer un enregistrement
   const handleDelete = id => {
-    axios.delete(`${host}/api/enseignat/${id}`)
+    axios.delete(`${host}/${id}`)
       .then(response => {
         // Supprimer l'enregistrement des données
         setData(data.filter(item => item.id !== id));
