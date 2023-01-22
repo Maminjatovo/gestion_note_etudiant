@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
-import Home from "./Home/Home"
-import Enseignat from "./component/Enseignat/Enseignat"
+import Enseignat from "./component/enseignat/Enseignat"
+import Home from "./component/etudiant/Home"
 function App() {
   return (
     <BrowserRouter>
       <div>
         <nav>
           <Link to="/">Etudiant</Link>
-          <Link to="/Enseignat">Enseignat</Link>
+          <Link to="/enseignat">Enseignat</Link>
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Enseignat" element={<Enseignat />} />
+          <Route path="/enseignat" element={<Enseignat />} />
         </Routes>
 
 
