@@ -11,11 +11,15 @@ function CRUDComponent() {
   const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+<<<<<<< HEAD
   
   const [image, setImageUrl] = useState('');
 
   
   const host='http://192.168.137.136:8000/api/enseignat';
+=======
+  const host='http://127.0.0.1:8000/api/enseignat';
+>>>>>>> main
   useEffect(() => {
     /**
      useEffect(() => {

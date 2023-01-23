@@ -1,9 +1,12 @@
 import React from 'react';
 import { Spin } from 'antd';
-import { getEtudiant, createEtudiant, updateEtudiant, deleteEtudiant, showEtudiant } from './Api';
+import { getEtudiant, createEtudiant, updateEtudiant, deleteEtudiant } from './Api';
 import Modal from 'react-modal';
 import './style.css';
+import FormData from 'form-data';
 
+
+Modal.setAppElement('#app');
 
 class Home extends React.Component {
 
@@ -18,12 +21,14 @@ class Home extends React.Component {
       telephone: '034',
       etudiants: [],
       spin: false,
-      isModalOpen: false
+      isModalOpen: false,
+      selectedFile: null,
     };
 
     this.add = true;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFileSelect = this.handleFileSelect.bind(this);
     this.refresh = this.refresh.bind(this);
 
 
@@ -43,9 +48,11 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ spin: true });
     getEtudiant()
       .then(res => {
-        this.setState({ etudiants: res.data });
+        this.setState({ spin: false });
+        this.setState({ etudiants: res.data });       
       })
       .catch(err => {
         console.error(err);
@@ -56,15 +63,52 @@ class Home extends React.Component {
     this.setIsModalOpen(false)
     this.setState({ spin: true });
     event.preventDefault();
-    const data = {
-      nom: this.state.nom,
-      prenom: this.state.prenom,
-      adresse: this.state.adresse,
-      sexe: this.state.sexe,
-      telephone: this.state.telephone,
-    };
+    
+    /*
+    let data = {}
+    if(this.state.selectedFile){
+       data = {
+        nom: this.state.nom,
+        prenom: this.state.prenom,
+        adresse: this.state.adresse,
+        sexe: this.state.sexe,
+        telephone: this.state.telephone,
+        image:this.state.selectedFile.name.substring(0, this.state.selectedFile.name.lastIndexOf(".")),
+        file:this.state.selectedFile,
+      };
+    }
+    else{     
+       data = {
+        nom: this.state.nom,
+        prenom: this.state.prenom,
+        adresse: this.state.adresse,
+        sexe: this.state.sexe,
+        telephone: this.state.telephone,
+        file:null,
+      };
+    }
+    */
+    
+
+    
+    
+const data = new FormData();
+    data.append('nom', this.state.nom);
+    data.append('prenom', this.state.prenom);
+    data.append('adresse', this.state.adresse);
+    data.append('sexe', this.state.sexe);
+    data.append('telephone', this.state.telephone);
+    if(this.state.selectedFile){
+      data.append('image', this.state.selectedFile.name.substring(0, this.state.selectedFile.name.lastIndexOf(".")));
+      data.append('file', this.state.selectedFile);
+    }
+    else{     
+      data.append('file', null);
+    }
+    
 
     if (this.add) {
+      
       createEtudiant(data)
         .then(res => {
           this.setState({ spin: false });
@@ -104,7 +148,7 @@ class Home extends React.Component {
   handleShow = id => {
     this.add = false;
     this.setIsModalOpen(true)
-    const etudiants = this.state.etudiants.filter(etudiant => etudiant.id == id);
+    const etudiants = this.state.etudiants.filter(etudiant => etudiant.id === id);
     this.setState({
       id: etudiants[0].id,
       nom: etudiants[0].nom,
@@ -141,12 +185,14 @@ class Home extends React.Component {
       sexe: 'Homme',
       adresse: '',
       telephone: '',
+      selectedFile:null,
+
     }
     );
   }
 
   setIsModalOpen(isModalOpen) {
-    if(this.add==true){
+    if (this.add === true) {
       this.refresh();
     }
     this.setState({
@@ -154,12 +200,16 @@ class Home extends React.Component {
     })
   }
 
-  setIsModalOpenAdd(isModalOpen) {   
+  setIsModalOpenAdd(isModalOpen) {
     this.refresh();
     this.add = true;
     this.setState({
       isModalOpen: isModalOpen
     })
+  }
+
+  handleFileSelect(event) {
+    this.setState({ selectedFile: event.target.files[0] });
   }
 
   render() {
@@ -189,11 +239,16 @@ class Home extends React.Component {
               Telephone :
               <input type="text" name="telephone" value={this.state.telephone} onChange={this.handleChange} required />
             </label>
+            <label>
+              Avatar :
+              <input type="file" name="selectedFile"  onChange={this.handleFileSelect} />
+              {this.state.selectedFile && <p>{this.state.selectedFile.name}</p>}
+            </label>
             <input type="submit" value="Valider" />
             <input type="button" onClick={this.refresh} value="Actualiser" />
-            <input  type="button" onClick={() => this.setIsModalOpen(false)} value="Fermer" />
+            <input type="button" onClick={() => this.setIsModalOpen(false)} value="Fermer" />
           </form>
-          
+
         </Modal>
 
 
@@ -201,7 +256,9 @@ class Home extends React.Component {
           <thead></thead>
           <tbody>
             <tr>
+           
               <th>Id</th>
+              <th>Avatar</th>
               <th>Nom</th>
               <th>Prenom</th>
               <th>adresse</th>
@@ -212,7 +269,11 @@ class Home extends React.Component {
 
             {this.state.etudiants.map((etudiant, k) =>
               <tr key={k}>
-                <td>{etudiant.id}</td>
+              <td>{etudiant.id}</td>
+                <td>
+                  <img src={etudiant.image} alt="{img.k}" />
+                </td>
+                
                 <td>{etudiant.nom}</td>
                 <td>{etudiant.prenom}</td>
                 <td>{etudiant.adresse}</td>
