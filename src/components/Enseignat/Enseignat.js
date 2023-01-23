@@ -11,8 +11,21 @@ function CRUDComponent() {
   const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  
+  const [image, setImageUrl] = useState('');
+
+  
   const host='http://192.168.137.136:8000/api/enseignat';
   useEffect(() => {
+    /**
+     useEffect(() => {
+          axios.get('/api/image/1')
+              .then(response => {
+                  setImage(`data:image/jpeg;base64,${response.data.image}`);
+              });
+      }, []);
+  
+     */
     // Récupérer les données de l'API lorsque le composant est monté
     axios.get(host)
       .then(response => {
@@ -149,15 +162,19 @@ function CRUDComponent() {
       <table>
         <thead>
           <tr>
+          <th>Image</th>
             <th>Nom</th>
             <th>Prenom</th>
             <th>Adresse</th>
+
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {data.map(item => (
             <tr key={item.id}>
+            
+              <td>{item.image && <img src={image} alt="Image from DB" />}</td>
               <td>{item.nom}</td>
               <td>{item.prenom}</td>
               <td>{item.adress}</td>
@@ -173,6 +190,27 @@ function CRUDComponent() {
   );
   
 }
-export default CRUDComponent;
-  // Fonction pour gérer les changements de saisie
 
+export default CRUDComponent;
+ 
+  /*
+  function ImageViewer() {
+      const [image, setImage] = useState(null);
+  
+      useEffect(() => {
+          axios.get('/api/image/1')
+              .then(response => {
+                  setImage(`data:image/jpeg;base64,${response.data.image}`);
+              });
+      }, []);
+  
+      return (
+          <div>
+              {image && <img src={image} alt="Image from DB" />}
+          </div>
+      );
+  }
+  
+  export default ImageViewer;
+  */
+  
